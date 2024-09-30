@@ -18,6 +18,13 @@ namespace _0930inheritance
             InitializeComponent();
             db = new databaseHandler();
             db.readAll();
+            Car oneCar = new Car();
+            oneCar.color = "piros";
+            oneCar.hp = 500;
+            oneCar.make = "VW";
+            oneCar.model = "Bogár";
+            oneCar.year = 1973;
+            db.addOne(oneCar);
         }
     }
 }

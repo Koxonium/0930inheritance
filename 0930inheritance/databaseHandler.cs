@@ -11,8 +11,9 @@ namespace _0930inheritance
     public class databaseHandler
     {
 
-        MySqlConnection conncection;
+        MySqlConnection connection;
         Car cars = new Car();
+        string tablename = "autok";
 
         public databaseHandler()
         {
@@ -21,18 +22,18 @@ namespace _0930inheritance
             string database = "trabant";
             string host = "localhost";
             string connectionString = $"host={host};username={username};password={password};database={database}";
-            conncection = new MySqlConnection(connectionString);
-            
+            connection = new MySqlConnection(connectionString);
+
         }
 
         public void readAll()
         {
             try
             {
-                conncection.Open();
+                connection.Open();
                 string query = $"SELECT * FROM autok";
 
-                MySqlCommand command = new MySqlCommand(query,conncection);
+                MySqlCommand command = new MySqlCommand(query, connection);
                 MySqlDataReader read = command.ExecuteReader();
                 while (read.Read())
                 {
@@ -47,13 +48,50 @@ namespace _0930inheritance
                 }
                 read.Close();
                 command.Dispose();
-                conncection.Close();
+                connection.Close();
                 MessageBox.Show("fut");
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);   
+                MessageBox.Show(e.Message);
             }
         }
+
+        public void addOne(Car oneCar)
+        {
+            try
+            {
+                connection.Open();
+                string query = $"INSERT INTO {tablename}(make,model,color,year,power) VALUES('{oneCar.make}','{oneCar.model}','{oneCar.color}','{oneCar.year}','{oneCar.hp}')";
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        public void DeleteOne(Car oneCar)
+        {
+            try
+            {
+                connection.Open();
+                string query = $"DELETE FROM {tablename} WHERE ID = {oneCar.ID}";
+                MySqlCommand command = new MySqlCommand(query,connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                connection.Close();
+                MessageBox.Show("törölve");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
     }
 }
